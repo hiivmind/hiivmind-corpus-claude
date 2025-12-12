@@ -77,3 +77,25 @@ Local sources are user-uploaded files stored within the corpus.
 - Include code examples from the docs
 - Suggest related docs from the same index section
 - Note source type and freshness warnings if relevant
+
+## Making Projects Aware of This Corpus
+
+If you're working in a project that uses the Claude Agent SDK but doesn't know about this corpus, you can add awareness to the project's CLAUDE.md.
+
+**The `data/project-awareness.md` file** contains a ready-to-use snippet that can be added to any project's CLAUDE.md to make Claude aware of this corpus when working in that project.
+
+### How to Inject
+
+1. Read `data/project-awareness.md` from this corpus
+2. Add its contents to the target project's CLAUDE.md (create if needed)
+3. The project will now know to use this corpus for Claude Agent SDK questions
+
+### When to Suggest Injection
+
+Suggest adding project awareness when:
+- User is working in a project that uses the Claude Agent SDK
+- User repeatedly asks Agent SDK questions without invoking the corpus
+- User says "I keep forgetting to use the docs"
+
+Example suggestion:
+> "I notice this project uses the Claude Agent SDK. Would you like me to add corpus awareness to this project's CLAUDE.md? That way I'll automatically know to check the Agent SDK docs when working here."
