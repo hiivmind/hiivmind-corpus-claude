@@ -1,0 +1,161 @@
+# Claude Agent SDK Corpus Configuration
+schema_version: 2
+
+corpus:
+  name: "claude-agent-sdk"
+  display_name: "Claude Agent SDK"
+  created_at: "2025-12-12T00:00:00Z"
+
+# Multiple sources - web-based documentation from platform.claude.com
+sources:
+  - id: "overview"
+    type: "web"
+    url: "https://platform.claude.com/docs/en/agent-sdk/overview"
+    title: "Agent SDK Overview"
+    description: "Introduction to the Claude Agent SDK - installation, authentication, core concepts"
+    last_fetched_at: null
+
+  - id: "typescript"
+    type: "web"
+    url: "https://platform.claude.com/docs/en/agent-sdk/typescript"
+    title: "TypeScript SDK Reference"
+    description: "Complete API reference for TypeScript - query(), tool(), createSdkMcpServer(), types"
+    last_fetched_at: null
+
+  - id: "python"
+    type: "web"
+    url: "https://platform.claude.com/docs/en/agent-sdk/python"
+    title: "Python SDK Reference"
+    description: "Complete API reference for Python - query(), ClaudeSDKClient, ClaudeAgentOptions"
+    last_fetched_at: null
+
+  - id: "typescript-v2-preview"
+    type: "web"
+    url: "https://platform.claude.com/docs/en/agent-sdk/typescript-v2-preview"
+    title: "TypeScript V2 Preview"
+    description: "Simplified V2 interface with send/receive patterns for multi-turn conversations"
+    last_fetched_at: null
+
+  - id: "streaming-vs-single-mode"
+    type: "web"
+    url: "https://platform.claude.com/docs/en/agent-sdk/streaming-vs-single-mode"
+    title: "Streaming vs Single Mode"
+    description: "Understanding input modes - streaming vs single message input"
+    last_fetched_at: null
+
+  - id: "migration-guide"
+    type: "web"
+    url: "https://platform.claude.com/docs/en/agent-sdk/migration-guide"
+    title: "Migration Guide"
+    description: "Migrating from Claude Code SDK to Claude Agent SDK"
+    last_fetched_at: null
+
+  - id: "custom-tools"
+    type: "web"
+    url: "https://platform.claude.com/docs/en/agent-sdk/custom-tools"
+    title: "Custom Tools"
+    description: "Building custom tools with createSdkMcpServer and tool() helper"
+    last_fetched_at: null
+
+  - id: "subagents"
+    type: "web"
+    url: "https://platform.claude.com/docs/en/agent-sdk/subagents"
+    title: "Subagents"
+    description: "Working with specialized subagents - programmatic and filesystem-based"
+    last_fetched_at: null
+
+  - id: "mcp"
+    type: "web"
+    url: "https://platform.claude.com/docs/en/agent-sdk/mcp"
+    title: "MCP in the SDK"
+    description: "Model Context Protocol servers - stdio, HTTP/SSE, and SDK servers"
+    last_fetched_at: null
+
+  - id: "plugins"
+    type: "web"
+    url: "https://platform.claude.com/docs/en/agent-sdk/plugins"
+    title: "Plugins"
+    description: "Loading and using custom plugins in the SDK"
+    last_fetched_at: null
+
+  - id: "skills"
+    type: "web"
+    url: "https://platform.claude.com/docs/en/agent-sdk/skills"
+    title: "Agent Skills"
+    description: "Using Agent Skills with the SDK - filesystem-based specialized capabilities"
+    last_fetched_at: null
+
+  - id: "permissions"
+    type: "web"
+    url: "https://platform.claude.com/docs/en/agent-sdk/permissions"
+    title: "Handling Permissions"
+    description: "Permission modes, canUseTool callback, hooks, and permission rules"
+    last_fetched_at: null
+
+  - id: "modifying-system-prompts"
+    type: "web"
+    url: "https://platform.claude.com/docs/en/agent-sdk/modifying-system-prompts"
+    title: "Modifying System Prompts"
+    description: "CLAUDE.md files, output styles, systemPrompt with append, custom prompts"
+    last_fetched_at: null
+
+  - id: "structured-outputs"
+    type: "web"
+    url: "https://platform.claude.com/docs/en/agent-sdk/structured-outputs"
+    title: "Structured Outputs"
+    description: "Getting validated JSON results from agent workflows using JSON schemas"
+    last_fetched_at: null
+
+  - id: "sessions"
+    type: "web"
+    url: "https://platform.claude.com/docs/en/agent-sdk/sessions"
+    title: "Session Management"
+    description: "Managing conversation state, session IDs, resumption, and forking sessions"
+    last_fetched_at: null
+
+  - id: "hosting"
+    type: "web"
+    url: "https://platform.claude.com/docs/en/agent-sdk/hosting"
+    title: "Hosting the Agent SDK"
+    description: "Production deployment patterns, container-based sandboxing, and hosting requirements"
+    last_fetched_at: null
+
+  - id: "secure-deployment"
+    type: "web"
+    url: "https://platform.claude.com/docs/en/agent-sdk/secure-deployment"
+    title: "Secure Deployment"
+    description: "Security best practices, isolation technologies, credential management, network controls"
+    last_fetched_at: null
+
+  - id: "slash-commands"
+    type: "web"
+    url: "https://platform.claude.com/docs/en/agent-sdk/slash-commands"
+    title: "Slash Commands"
+    description: "Built-in and custom slash commands for controlling Claude Code sessions"
+    last_fetched_at: null
+
+  - id: "cost-tracking"
+    type: "web"
+    url: "https://platform.claude.com/docs/en/agent-sdk/cost-tracking"
+    title: "Cost Tracking"
+    description: "Token usage tracking, billing implementation, and usage reporting"
+    last_fetched_at: null
+
+  - id: "todo-tracking"
+    type: "web"
+    url: "https://platform.claude.com/docs/en/agent-sdk/todo-tracking"
+    title: "Todo Tracking"
+    description: "TodoWrite tool for structured task management and progress display"
+    last_fetched_at: null
+
+index:
+  format: "markdown"
+  last_updated_at: "2025-12-12T00:00:00Z"
+
+settings:
+  include_patterns:
+    - "**/*.md"
+    - "**/*.mdx"
+  exclude_patterns:
+    - "**/_*.md"
+    - "**/_snippets/**"

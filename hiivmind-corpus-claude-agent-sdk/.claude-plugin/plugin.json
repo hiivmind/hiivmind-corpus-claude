@@ -1,0 +1,10 @@
+{
+  "name": "hiivmind-corpus-claude-agent-sdk",
+  "description": "Always-current Claude Agent SDK documentation with intelligent navigation",
+  "version": "1.0.0",
+  "author": {
+    "name": "hiivmind"
+  },
+  "repository": "https://github.com/hiivmind/hiivmind-corpus-claude",
+  "keywords": ["corpus", "documentation", "claude", "agent-sdk", "anthropic", "ai", "sdk"]
+}
