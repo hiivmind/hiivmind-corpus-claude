@@ -1,0 +1,17 @@
+{
+  "name": "hiivmind-corpus-claude",
+  "description": "Collection of always-current documentation navigation plugins for claude,
+  "version": "1.0.0",
+  "author": {
+    "name": "hiivmind"
+  },
+  "keywords": [
+    "corpus",
+    "documentation",
+    "claude",
+    "agent-sdk",
+    "anthropic",
+    "ai",
+    "sdk"
+  ]
+}

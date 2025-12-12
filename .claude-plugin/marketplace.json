@@ -1,0 +1,21 @@
+{
+  "name": "hiivmind-corpus-claude",
+  "owner": {
+    "name": "hiivmind"
+  },
+  "repository": "https://github.com/hiivmind/hiivmind-corpus-claude",
+  "metadata": {
+    "description": "Collection of always-current documentation navigation plugins for Claude",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "hiivmind-corpus-claude-agent-sdk",
+
+      "source": "./hiivmind-corpus-claude-agent-sdk",
+      "description": "Always-claude agent sdk documentation",
+      "version": "1.0.0",
+      "keywords": ["claude", "agent", "sdk", "documentation", "skills", "mcp"]
+    }
+  ]
+}
