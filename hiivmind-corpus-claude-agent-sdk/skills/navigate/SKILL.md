@@ -9,11 +9,49 @@ Find and retrieve relevant documentation from the Claude Agent SDK corpus.
 
 ## Process
 
-1. **Read the index**: `data/index.md`
-2. **Parse path format**: `{source_id}:{relative_path}`
-3. **Look up source** in `data/config.yaml` by ID
-4. **Get content** based on source type (see Source Access below)
-5. **Answer** with citation to source and file path
+1. **Search the indexes first** (see Index Search section below)
+   - Extract key concepts from the question
+   - Grep the index files for those terms
+   - If matches found → use those entries directly
+2. **If no search matches, read the index**: `data/index.md`
+3. **Parse path format**: `{source_id}:{relative_path}`
+4. **Look up source** in `data/config.yaml` by ID
+5. **Get content** based on source type (see Source Access below)
+6. **Answer** with citation to source and file path
+
+## Index Search (Recommended First Step)
+
+**Before reading sections sequentially, SEARCH the indexes for relevant terms.**
+
+### Step 1: Extract Key Concepts
+
+Analyze the user's question and extract:
+- **Explicit terms**: Words directly used in the question
+- **Synonyms**: Related terms (e.g., "tool" → also try "function", "capability")
+- **Domain terms**: Technical concepts that might appear in docs (e.g., "agent" → also try "SDK", "client")
+
+### Step 2: Search Index Files
+
+```bash
+# Search for each term in the index
+grep -ri "{term}" data/ --include="*.md"
+```
+
+**Tip:** Search for the most specific term first. If no matches, broaden to synonyms.
+
+### Step 3: Use Search Results
+
+If grep finds matches:
+1. **Direct hit**: Entry description matches the question → use that path
+2. **Related hit**: Entry is in the right area → read that section for context
+3. **No hit in index**: The topic may not be indexed yet → report this as an index gap
+
+### Step 4: Report Index Gaps
+
+If the user's question cannot be answered because the index lacks relevant entries:
+
+> "The index doesn't have entries for '{term}'. The closest match is '{related_section}'.
+> If this topic should be covered, consider running `hiivmind-corpus-enhance` to add depth to this area."
 
 ## Path Format
 
