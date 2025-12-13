@@ -91,34 +91,45 @@ Examples:
 
 ## Source Access
 
+### Worked Example (IMPORTANT - Follow This Pattern!)
+
+**Index entry found:** `agent-sdk:custom-tools.md`
+
+**Step 1 - Parse the path:**
+- `source_id` = `agent-sdk` (everything before the colon)
+- `relative_path` = `custom-tools.md` (everything after the colon)
+
+**Step 2 - Check cache first:**
+Look for: `.cache/web/agent-sdk/custom-tools.md`
+
+**Step 3 - If cache miss, look up URL in config.yaml:**
+```yaml
+sources:
+  - id: agent-sdk
+    type: web
+    urls:
+      - url: https://docs.anthropic.com/en/docs/agents-and-tools/claude-agent-sdk/custom-tools
+        cached_as: custom-tools.md
+```
+
+**CRITICAL:** The `relative_path` from the index is used EXACTLY as-is. NEVER invent or guess filenames!
+
 ### For web sources
 
-Read from cache: `.cache/web/{source_id}/{cached_file}`
+Read from cache: `.cache/web/{source_id}/{relative_path}`
 
 If cache miss, look up the URL in `data/config.yaml` and fetch fresh content using WebFetch.
 
-**Cache structure:**
-- `.cache/web/agent-sdk/overview.md`
-- `.cache/web/agent-sdk/typescript.md`
-- etc.
-
 ### For git sources
 
-Look up the source in `data/config.yaml` to get `repo_owner`, `repo_name`, `branch`, and `docs_root`.
+**If `.source/{source_id}/` exists (local clone):**
+Read directly from `.source/{source_id}/{docs_root}/{relative_path}`
 
-**IMPORTANT: Always check for local clone first!**
+**If no local clone:**
 
-**Step 1 - Check for local clone:**
-Use Glob or Bash to check if `.source/{source_id}/` exists.
-
-**Step 2a - If local clone exists (PREFERRED):**
-Read directly from `.source/{source_id}/{docs_root}/{path}` using the Read tool.
-This is faster and works offline.
-
-**Step 2b - If NO local clone exists (fallback only):**
-Fetch from GitHub:
+Fetch from GitHub using the EXACT path from the index:
 ```
-https://raw.githubusercontent.com/{repo_owner}/{repo_name}/{branch}/{docs_root}/{path}
+https://raw.githubusercontent.com/{repo_owner}/{repo_name}/{branch}/{docs_root}/{relative_path}
 ```
 Use WebFetch to retrieve content.
 
