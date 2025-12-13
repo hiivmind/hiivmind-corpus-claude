@@ -43,12 +43,16 @@ grep -ri "{term}" data/ --include="*.md"
 
 If grep finds matches:
 1. **Direct hit**: Entry description matches the question → use that path
-2. **Related hit**: Entry is in the right area → read that section for context
-3. **No hit in index**: The topic may not be indexed yet → report this as an index gap
+2. **Related hit**: Entry is in the right area but doesn't directly answer → **GO TO STEP 4 IMMEDIATELY**
+3. **No hit in index**: The topic may not be indexed → **GO TO STEP 4 IMMEDIATELY**
 
-### Step 4: Handle Index Gaps
+**IMPORTANT:** If you searched for "streaming" and only found "Custom Tools" without "streaming" in the description, that's a **related hit, not a direct hit**. Stop and ask the user before exploring further.
 
-If the user's question cannot be answered because the index lacks relevant entries, **use AskUserQuestion** to clarify:
+### Step 4: Clarify Before Exploring (IMPORTANT!)
+
+**STOP HERE if you only found related content, not a direct answer.**
+
+Don't start exploring, guessing paths, or searching the source files. Instead, **use AskUserQuestion** to clarify:
 
 **Present these options:**
 
