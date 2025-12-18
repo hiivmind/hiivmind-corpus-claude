@@ -198,7 +198,7 @@ Read directly from: `data/uploads/{source_id}/{path}`
 
 If you're working in a project that uses the Claude Agent SDK but doesn't know about this corpus, you can add awareness to the project's CLAUDE.md.
 
-**The `data/project-awareness.md` file** contains a ready-to-use snippet.
+**The `references/project-awareness.md` file** contains a ready-to-use snippet.
 
 ### When to Suggest Injection
 
