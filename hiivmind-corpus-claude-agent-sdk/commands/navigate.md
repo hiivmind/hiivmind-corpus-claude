@@ -1,13 +1,64 @@
 ---
-name: hiivmind-corpus-claude-agent-sdk-navigate
-description: Find relevant Claude Agent SDK documentation. Use when working with Claude Agent SDK code, APIs, or configuration.
+description: Ask questions about Claude Agent SDK documentation or manage this corpus
+argument-hint: Question or command (e.g., "how do custom tools work?", "refresh", "enhance")
+allowed-tools: ["Read", "Grep", "Glob", "WebFetch", "AskUserQuestion", "Skill", "Task", "TodoWrite"]
 ---
 
 # Claude Agent SDK Corpus Navigator
 
-Find and retrieve relevant documentation from the Claude Agent SDK corpus.
+Direct access to Claude Agent SDK documentation.
 
-## Process
+**User request:** $ARGUMENTS
+
+**Corpus location:** `${CLAUDE_PLUGIN_ROOT}`
+
+---
+
+## Routing
+
+### If no arguments provided
+
+Show a brief help message:
+
+```
+Claude Agent SDK Corpus - ask me anything!
+
+Examples:
+  /hiivmind-corpus-claude-agent-sdk:navigate how do custom tools work?
+  /hiivmind-corpus-claude-agent-sdk:navigate TypeScript SDK setup
+  /hiivmind-corpus-claude-agent-sdk:navigate agent configuration
+
+Maintenance:
+  /hiivmind-corpus-claude-agent-sdk:navigate refresh     - Update index from upstream
+  /hiivmind-corpus-claude-agent-sdk:navigate enhance X   - Add depth to topic X
+  /hiivmind-corpus-claude-agent-sdk:navigate status      - Check corpus freshness
+```
+
+### If arguments match a maintenance command
+
+| Pattern | Skill to Load |
+|---------|---------------|
+| `refresh`, `update`, `sync` | `hiivmind-corpus-refresh` |
+| `enhance {topic}` | `hiivmind-corpus-enhance` |
+| `status`, `freshness`, `stale?` | `hiivmind-corpus-refresh` (status mode) |
+| `add source {url}` | `hiivmind-corpus-add-source` |
+| `awareness`, `inject`, `claude.md` | `hiivmind-corpus-awareness` |
+
+**How to invoke parent skills:**
+
+1. **Set corpus context** - All paths are relative to `${CLAUDE_PLUGIN_ROOT}`
+2. **Load the skill** via the Skill tool (e.g., `hiivmind-corpus-refresh`)
+3. **Pass context** in your message: "Working in Claude Agent SDK corpus at ${CLAUDE_PLUGIN_ROOT}. User wants to {action}."
+
+The parent skill will then operate on THIS corpus using relative paths like `data/config.yaml`, `data/index.md`, `.cache/`, etc.
+
+### Otherwise: Navigate (default path)
+
+This is a documentation question. Follow the navigation process below.
+
+---
+
+## Navigation Process
 
 1. **Search the indexes first** (see Index Search section below)
    - Extract key concepts from the question
@@ -18,6 +69,8 @@ Find and retrieve relevant documentation from the Claude Agent SDK corpus.
 4. **Look up source** in `data/config.yaml` by ID
 5. **Get content** based on source type (see Source Access below)
 6. **Answer** with citation to source and file path
+
+---
 
 ## Index Search (Recommended First Step)
 
@@ -46,7 +99,7 @@ If grep finds matches:
 2. **Related hit**: Entry is in the right area but doesn't directly answer → **GO TO STEP 4 IMMEDIATELY**
 3. **No hit in index**: The topic may not be indexed → **GO TO STEP 4 IMMEDIATELY**
 
-**IMPORTANT:** If you searched for "streaming" and only found "Custom Tools" without "streaming" in the description, that's a **related hit, not a direct hit**. Stop and ask the user before exploring further.
+**CRITICAL: Use the EXACT path from the index! NEVER guess or invent filenames.**
 
 ### Step 4: Clarify Before Exploring (IMPORTANT!)
 
@@ -57,32 +110,14 @@ Don't start exploring, guessing paths, or searching the source files. Instead, *
 **Present these options:**
 
 1. **Clarify the request** - Maybe the question can be rephrased
-   - "Could you rephrase your question? I searched for '{terms}' but found no matches."
-   - Suggest alternative terms: "Did you mean '{synonym}' or '{related_term}'?"
-
 2. **Show what's available** - Help the user find related content
-   - "The closest sections I found are: {list nearby sections}"
-   - "Would any of these help: {list related entries}?"
-
 3. **Identify an index gap** - If the user confirms their request was valid
-   - "This topic isn't covered in the current index."
    - Offer next steps:
-     - `hiivmind-corpus-enhance` - Add depth to a specific topic area
-     - `hiivmind-corpus-add-source` - Add another documentation source
-     - `hiivmind-corpus-refresh` - Check if upstream docs have new content
+     - `/hiivmind-corpus-claude-agent-sdk:navigate enhance {topic}` - Add depth
+     - `/hiivmind-corpus-claude-agent-sdk:navigate add source {url}` - Add another source
+     - `/hiivmind-corpus-claude-agent-sdk:navigate refresh` - Check for upstream updates
 
-**Example response:**
-
-> I searched the index for "streaming", "real-time", and "events" but found no direct matches.
->
-> **Options:**
-> 1. **Rephrase**: Did you mean "async operations" or "tool callbacks"?
-> 2. **Related sections**: The "Custom Tools" section covers agent extensions
-> 3. **Index gap**: If you expected this topic to be covered, the index may need:
->    - Enhancing with `hiivmind-corpus-enhance` for more depth
->    - A new source added with `hiivmind-corpus-add-source`
->
-> Which would you like to explore?
+---
 
 ## Path Format
 
@@ -92,6 +127,8 @@ Examples:
 - `agent-sdk:overview.md` - Web source
 - `agent-sdk:typescript.md` - Web source
 - `agent-sdk:custom-tools.md` - Web source
+
+---
 
 ## Source Access
 
@@ -130,18 +167,13 @@ If cache miss, look up the URL in `data/config.yaml` and fetch fresh content usi
 Read directly from `.source/{source_id}/{docs_root}/{relative_path}`
 
 **If no local clone:**
-
-Fetch from GitHub using the EXACT path from the index:
-```
-https://raw.githubusercontent.com/{repo_owner}/{repo_name}/{branch}/{docs_root}/{relative_path}
-```
-Use WebFetch to retrieve content.
+Fetch from GitHub using the EXACT path from the index.
 
 ### For local sources
 
 Read directly from: `data/uploads/{source_id}/{path}`
 
-Local sources are user-uploaded files stored within the corpus.
+---
 
 ## File Locations
 
@@ -151,6 +183,8 @@ Local sources are user-uploaded files stored within the corpus.
 - **Local sources**: `data/uploads/{source_id}/` (user-uploaded files)
 - **Web cache**: `.cache/web/{source_id}/` (fetched web content, gitignored)
 
+---
+
 ## Output
 
 - Cite the source ID and file path for reference
@@ -158,17 +192,13 @@ Local sources are user-uploaded files stored within the corpus.
 - Suggest related docs from the same index section
 - Note source type and freshness warnings if relevant
 
+---
+
 ## Making Projects Aware of This Corpus
 
 If you're working in a project that uses the Claude Agent SDK but doesn't know about this corpus, you can add awareness to the project's CLAUDE.md.
 
-**The `data/project-awareness.md` file** contains a ready-to-use snippet that can be added to any project's CLAUDE.md to make Claude aware of this corpus when working in that project.
-
-### How to Inject
-
-1. Read `data/project-awareness.md` from this corpus
-2. Add its contents to the target project's CLAUDE.md (create if needed)
-3. The project will now know to use this corpus for Claude Agent SDK questions
+**The `data/project-awareness.md` file** contains a ready-to-use snippet.
 
 ### When to Suggest Injection
 
@@ -177,5 +207,33 @@ Suggest adding project awareness when:
 - User repeatedly asks Agent SDK questions without invoking the corpus
 - User says "I keep forgetting to use the docs"
 
-Example suggestion:
-> "I notice this project uses the Claude Agent SDK. Would you like me to add corpus awareness to this project's CLAUDE.md? That way I'll automatically know to check the Agent SDK docs when working here."
+---
+
+## Example Sessions
+
+### Documentation Question
+
+**User:** `/hiivmind-corpus-claude-agent-sdk:navigate how do custom tools work?`
+
+1. Grep `data/index.md` for "custom tools"
+2. Find entry like `agent-sdk:custom-tools.md`
+3. Read from `.cache/web/agent-sdk/custom-tools.md`
+4. Answer with code examples and link to source
+
+### Maintenance: Refresh
+
+**User:** `/hiivmind-corpus-claude-agent-sdk:navigate refresh`
+
+1. Detect maintenance keyword: `refresh`
+2. Load parent skill: `hiivmind-corpus-refresh`
+3. Context message: "Working in Claude Agent SDK corpus at ${CLAUDE_PLUGIN_ROOT}. User wants to refresh/sync from upstream."
+4. Parent skill executes using relative paths
+
+### Maintenance: Enhance
+
+**User:** `/hiivmind-corpus-claude-agent-sdk:navigate enhance tools`
+
+1. Detect maintenance keyword: `enhance`
+2. Extract topic: `tools`
+3. Load parent skill: `hiivmind-corpus-enhance`
+4. Context message: "Working in Claude Agent SDK corpus at ${CLAUDE_PLUGIN_ROOT}. User wants to enhance the 'tools' section."
