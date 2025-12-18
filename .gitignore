@@ -1,8 +1,8 @@
-# Cloned documentation repositories (in all child plugins)
-**/.source/
+# Cloned source repositories
+.source/
 
-# Cached web content (in all child plugins)
-**/.cache/
+# Cached web content
+.cache/
 
 # OS files
 .DS_Store
